@@ -19,7 +19,7 @@ void Init_PORT(void){
 
 void Init_INT0(void){
 	EIMSK |= 1<<INT0;
-	EICRA |= ISC01<<1 | ISC00<<0;
+	EICRA |= ISC01<<0 | ISC00<<0;
 	sei();
 }
 

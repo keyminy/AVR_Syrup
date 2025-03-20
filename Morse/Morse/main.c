@@ -5,46 +5,36 @@
 #include <avr/interrupt.h>
 #include "tim.h"
 
+send_mos(volatile uint8_t *port,volatile uint16_t *tCnt, uint16_t delay_ms);
+
 int main(void)
 {
-	uint8_t cnt = 0;
 	PORTC = 0x00;
 	DDRC = 0xFF;
 	PORTB = 0x00;
 	DDRB = 0xFF;
 	PORTA = 0x00;
 	DDRA = 0xFF;
-	uint8_t LED = 0xff;
+
 	init_timer0();
 	while (1)
 	{
-		S_count = 0;
-		while(cnt <= 5){
-			if(S_count >= 500){
-				cnt++;
-				S_count = 0;
-				PORTC ^= LED;
-			}
-		}
-		cnt = 0;
-		O_count = 0;
-		while(cnt<=5){
-			if(O_count >= 1000){
-				cnt++;
-				O_count = 0;
-				PORTB ^= LED;
-			}
-		}
-		cnt = 0;
-		S_count = 0;
-		while(cnt <= 5){
-			if(S_count >= 500){
-				cnt++;
-				S_count = 0;
-				PORTA ^= LED;
-			}
-		}		
-		cnt = 0;
+		send_mos(&PORTC,&S_count,500);
+		send_mos(&PORTB,&O_count,1000);
+		send_mos(&PORTA,&S_count,500);
 	}
 }
 
+send_mos(volatile uint8_t *port,volatile uint16_t *tCnt, uint16_t delay_ms){
+	static uint8_t cnt = 0;
+	uint8_t LED = 0xff;
+	*tCnt = 0;
+	while(cnt <= 5){
+		if(*tCnt >= delay_ms){
+			cnt++;
+			*tCnt = 0;
+			*port ^= LED;
+		}
+	}
+	cnt = 0;
+}

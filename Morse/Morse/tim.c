@@ -1,16 +1,19 @@
-﻿/*
- * tim.c
- *
- * Created: 2025-03-06 오후 8:13:37
- *  Author: me
- */ 
-#include "tim.h"
+﻿#include "tim.h"
 
-volatile uint16_t S_count = 0;
-volatile uint16_t O_count = 0;
-volatile uint16_t S2_count = 0;
-volatile uint16_t morse_count = 0;
+volatile uint16_t tim_dot = 0;
+volatile uint16_t tim_dash = 0;
+volatile uint16_t tim_wait = 0;
+volatile uint16_t g_Tick1m = 0;
 
+// 1ms마다 이 함수가 실행된다.
+ISR(TIMER0_OVF_vect){
+	/* 인터럽트 루틴을 가능한 짧게 짜라, ms_count만 증가시키고 빠져나오게함 */
+	TCNT0=6; // 다시 6부터 세야죠..! 6 ~ 256개의 pulse카운트 --> 1ms를 맞춰주기 위해서 TCNT0을 6으로 설정
+	g_Tick1m++;
+	tim_dot++;
+	tim_dash++;
+	tim_wait++;
+}
 
 void init_timer0(void){
 	//8bit timer, timer 0번과 2번 사용한다.
@@ -33,12 +36,12 @@ void init_timer0(void){
 	sei(); 
 }
 
-// 1ms마다 이 함수가 실행된다.
-ISR(TIMER0_OVF_vect){
-	/* 인터럽트 루틴을 가능한 짧게 짜라, ms_count만 증가시키고 빠져나오게함 */
-	TCNT0=6; // 다시 6부터 세야죠..! 6 ~ 256개의 pulse카운트 --> 1ms를 맞춰주기 위해서 TCNT0을 6으로 설정
-	S_count++;
-	O_count++;
-	S2_count++;
-	morse_count++;
+uint8_t TimeElapsed(uint16_t currentTick1m, uint16_t lastTick1m, uint16_t delayTime)
+{
+	if((currentTick1m - lastTick1m) >= delayTime){
+		return 1;
+	}
+	else{
+		return 0;
+	}
 }

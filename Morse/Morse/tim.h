@@ -12,9 +12,10 @@
 #include <avr/interrupt.h>
 
 void init_timer0(void);
-extern volatile uint16_t S_count;
-extern volatile uint16_t O_count;
-extern volatile uint16_t S2_count;
-extern volatile uint16_t morse_count;
+uint8_t TimeElapsed(uint16_t currentTick1m, uint16_t lastTick1m, uint16_t delayTime);
+extern volatile uint16_t tim_dot;
+extern volatile uint16_t tim_dash;
+extern volatile uint16_t tim_wait;
+extern volatile uint16_t g_Tick1m;
 
 #endif /* TIM_H_ */

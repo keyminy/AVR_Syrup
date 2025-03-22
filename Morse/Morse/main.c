@@ -4,8 +4,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "tim.h"
-
-send_mos(volatile uint8_t *port,volatile uint16_t *tCnt, uint16_t delay_ms);
+#include "morse.h"
 
 int main(void)
 {
@@ -15,26 +14,20 @@ int main(void)
 	DDRB = 0xFF;
 	PORTA = 0x00;
 	DDRA = 0xFF;
-
+	DDRE = 0xFF;
+	PORTE = 0x00;
+	
+	uint16_t lastTick1m = 0;
+	
 	init_timer0();
+	
 	while (1)
 	{
-		send_mos(&PORTC,&S_count,500);
-		send_mos(&PORTB,&O_count,1000);
-		send_mos(&PORTA,&S_count,500);
-	}
-}
+		send_S(&PORTA);
+		send_O(&PORTC);
+		send_S(&PORTE);
 
-send_mos(volatile uint8_t *port,volatile uint16_t *tCnt, uint16_t delay_ms){
-	static uint8_t cnt = 0;
-	uint8_t LED = 0xff;
-	*tCnt = 0;
-	while(cnt <= 5){
-		if(*tCnt >= delay_ms){
-			cnt++;
-			*tCnt = 0;
-			*port ^= LED;
-		}
+		lastTick1m = tim_wait;  // 현재 시간 저장
+		while(!(TimeElapsed(tim_wait,lastTick1m,1000)));
 	}
-	cnt = 0;
 }

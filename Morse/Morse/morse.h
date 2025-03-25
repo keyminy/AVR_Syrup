@@ -14,5 +14,8 @@ send_dot(volatile uint8_t *port);
 send_dash(volatile uint8_t *port);
 send_S(volatile uint8_t *port);
 send_O(volatile uint8_t *port);
+send_L(volatile uint8_t *port);
+send_A(volatile uint8_t *port);
+send_N(volatile uint8_t *port);
 
 #endif /* MORSE_H_ */

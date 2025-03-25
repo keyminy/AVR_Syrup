@@ -12,7 +12,7 @@
 #include <avr/interrupt.h>
 
 void init_timer0(void);
-uint8_t TimeElapsed(uint16_t currentTick1m, uint16_t lastTick1m, uint16_t delayTime);
+uint8_t TimeElapsed(volatile uint16_t currentTick1m, volatile uint16_t lastTick1m, uint16_t delayTime);
 extern volatile uint16_t tim_dot;
 extern volatile uint16_t tim_dash;
 extern volatile uint16_t tim_wait;

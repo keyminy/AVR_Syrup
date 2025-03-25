@@ -36,7 +36,7 @@ void init_timer0(void){
 	sei(); 
 }
 
-uint8_t TimeElapsed(uint16_t currentTick1m, uint16_t lastTick1m, uint16_t delayTime)
+uint8_t TimeElapsed(volatile uint16_t currentTick1m, volatile uint16_t lastTick1m, uint16_t delayTime)
 {
 	if((currentTick1m - lastTick1m) >= delayTime){
 		return 1;

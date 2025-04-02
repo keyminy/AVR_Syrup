@@ -4,7 +4,10 @@
 send_dot(volatile uint8_t *port){
 	static uint8_t cnt = 0;
 	static volatile uint16_t lastTickDot1m = 0;
+	cli();
 	lastTickDot1m = tim_dot;
+	sei();
+
 	while(cnt < 2){
 		if(TimeElapsed(tim_dot,lastTickDot1m,300)){
 			cnt++;
@@ -18,7 +21,9 @@ send_dot(volatile uint8_t *port){
 send_dash(volatile uint8_t *port){
 	static uint8_t cnt = 0;
 	static volatile uint16_t lastTickDash1m = 0;
+	cli();
 	lastTickDash1m = tim_dash;
+	sei();
 	while(cnt < 2){
 		if(TimeElapsed(tim_dash,lastTickDash1m,900)){
 			cnt++;

@@ -25,21 +25,29 @@ int main(void)
 	{
 		// L: .-..
 		send_L(&PORTA);
+		cli();
 		lastTick1m = tim_wait;
-		while(!(TimeElapsed(tim_wait,lastTick1m,1000)));
+		sei();
+		while(!(TimeElapsed(tim_wait,lastTick1m,3000)));
 		// A: .-
 		send_A(&PORTB);
+		cli();
 		lastTick1m = tim_wait;
-		while(!(TimeElapsed(tim_wait,lastTick1m,1000)));
+		sei();
+		while(!(TimeElapsed(tim_wait,lastTick1m,3000)));
 		// O: ---
 		send_O(&PORTC);
+		cli();
 		lastTick1m = tim_wait;
-		while(!(TimeElapsed(tim_wait,lastTick1m,1000)));
+		sei();
+		while(!(TimeElapsed(tim_wait,lastTick1m,3000)));
 		// N: -.
 		send_N(&PORTE);
 
 		// 3000ms delay후 재전송
+		cli();
 		lastTick1m = tim_wait;  // 현재 시간 저장
+		sei();
 		while(!(TimeElapsed(tim_wait,lastTick1m,5000)));
 	}
 }
